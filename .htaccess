@@ -1,0 +1,19 @@
+# Enable RewriteEngine
+RewriteEngine On
+
+# Redirect HTTP to HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Redirect www to non-www
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# Remove .php extension from URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [L]
+
+# Optional: Redirect requests with .php to URLs without .php
+RewriteCond %{THE_REQUEST} \s([^.]+)\.php[\s?]
+RewriteRule ^([^.]+)\.php$ /$1 [R=301,L]
